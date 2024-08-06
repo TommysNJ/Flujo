@@ -19,7 +19,7 @@ function totalSumByProject(items, result) {
     const projectTotals = {};
 
     items.forEach((item, index) => {
-        const codigoCPP = item;
+        const codigoCPP = item.codigoCPP;
         if (codigoCPP && typeof codigoCPP === 'string') { // Verificar si codigoCPP está definido y es una cadena
             const projectCode = codigoCPP.substring(0, 4); // Obtener los primeros 4 dígitos
             if (!projectTotals[projectCode]) {
