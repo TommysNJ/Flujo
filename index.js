@@ -14,8 +14,26 @@ function totalSum(result) {
     return result.reduce((sum, value) => sum + value, 0);
 }
 
+
 // Función para calcular la suma total por proyecto
 function totalSumByProject(items) {
+    const projectTotals = {};
+
+    items.forEach(item => {
+        const codigoCPP = item.codigoCPP;
+        if (codigoCPP && typeof codigoCPP === 'string') { // Verificar si codigoCPP está definido y es una cadena
+            const projectCode = codigoCPP.substring(0, 4); // Obtener los primeros 4 dígitos
+            if (!projectTotals[projectCode]) {
+                projectTotals[projectCode] = 0;
+            }
+            projectTotals[projectCode] += item.value || 0; // Asegurarse de que item.value es un número
+        }
+    });
+
+    return projectTotals;
+}
+// Función para calcular la suma total por proyecto
+/*function totalSumByProject(items) {
     const projectTotals = {};
 
     items.forEach(item => {
@@ -27,7 +45,7 @@ function totalSumByProject(items) {
     });
 
     return projectTotals;
-}
+}*/
 
 // Ruta para manejar las solicitudes de cálculo
 app.post('/calculate', (req, res) => {
