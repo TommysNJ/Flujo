@@ -1,32 +1,38 @@
-/*const express = require('express');
-const { exec } = require('child_process');
+const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.post('/calculate', (req, res) => {
-    const { horasAdmin, horasTec } = req.body;
+// Función para sumar dos números
+function add(horasAdmin, horasTec) {
+    return horasAdmin + horasTec;
+}
 
-    // Ejecuta el archivo Java y pasa los parámetros
-    exec(`java Calculator ${horasAdmin} ${horasTec}`, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error: ${error.message}`);
-            return res.status(500).json({ error: 'Error en el cálculo' });
-        }
-        if (stderr) {
-            console.error(`Stderr: ${stderr}`);
-            return res.status(500).json({ error: 'Error en el cálculo' });
-        }
-        // Envía la respuesta al cliente
-        res.json({ result: stdout.trim() });
-    });
+// Función para calcular la suma total de una lista de números
+function totalSum(result) {
+    return result.reduce((sum, value) => sum + value, 0);
+}
+
+// Ruta para manejar las solicitudes de cálculo
+app.post('/calculate', (req, res) => {
+    const { horasAdmin, horasTec, operation, result } = req.body;
+
+    if (operation === 'add') {
+        res.json({ result: add(horasAdmin, horasTec) });
+    } else if (operation === 'totalSum' && Array.isArray(result)) {
+        res.json({ result: totalSum(result) });
+    } else {
+        res.status(400).json({ error: 'Invalid input' });
+    }
 });
 
+// Iniciar el servidor
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
-});*/
-const express = require('express');
+});
+
+/*const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -43,4 +49,4 @@ app.post('/calculate', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
-});
+});*/
