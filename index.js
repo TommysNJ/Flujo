@@ -15,15 +15,18 @@ function totalSum(result) {
 }
 
 // Función para calcular la suma total por proyecto
-function totalSumByProject(codes, results) {
+function totalSumByProject(items, result) {
     const projectTotals = {};
 
-    codes.forEach(code => {
-        const projectCode = code.substring(0, 4); // Obtener los primeros 4 dígitos
-        if (!projectTotals[projectCode]) {
-            projectTotals[projectCode] = 0;
+    items.forEach((item, index) => {
+        const codigoCPP = item;
+        if (codigoCPP && typeof codigoCPP === 'string') { // Verificar si codigoCPP está definido y es una cadena
+            const projectCode = codigoCPP.substring(0, 4); // Obtener los primeros 4 dígitos
+            if (!projectTotals[projectCode]) {
+                projectTotals[projectCode] = 0;
+            }
+            projectTotals[projectCode] += result[index] || 0; // Sumar el valor correspondiente en results
         }
-        projectTotals[projectCode] += results[code] || 0; // Sumar el valor correspondiente en results
     });
 
     return projectTotals;
@@ -31,14 +34,14 @@ function totalSumByProject(codes, results) {
 
 // Ruta para manejar las solicitudes de cálculo
 app.post('/calculate', (req, res) => {
-    const { horasAdmin,  horasTec, operation, result, codes, results } = req.body;
+    const { horasAdmin, horasTec, operation, result, items} = req.body;
 
     if (operation === 'add') {
         res.json({ result: add(horasAdmin, horasTec) });
     } else if (operation === 'totalSum' && Array.isArray(result)) {
         res.json({ result: totalSum(result) });
-    } else if (operation === 'totalSumByProject' && Array.isArray(codes) && typeof results === 'object') {
-        res.json({ result: totalSumByProject(codes, results) });
+    } else if (operation === 'totalSumByProject' && Array.isArray(items) && Array.isArray(result)) {
+        res.json({ result: totalSumByProject(items, result) });
     } else {
         res.status(400).json({ error: 'Invalid input' });
     }
@@ -48,7 +51,6 @@ app.post('/calculate', (req, res) => {
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
-
 
 /*
 // Ruta para manejar las solicitudes de cálculo
