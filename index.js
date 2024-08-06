@@ -1,4 +1,4 @@
-const express = require('express');
+/*const express = require('express');
 const { exec } = require('child_process');
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,4 +25,22 @@ app.post('/calculate', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
+});*/
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.json());
+
+app.post('/calculate', (req, res) => {
+  const { a, b } = req.body;
+  if (typeof a === 'number' && typeof b === 'number') {
+    res.json({ result: a + b });
+  } else {
+    res.status(400).json({ error: 'Invalid input' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
 });
