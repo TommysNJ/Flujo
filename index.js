@@ -33,9 +33,9 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 app.post('/calculate', (req, res) => {
-  const { a, b } = req.body;
-  if (typeof a === 'number' && typeof b === 'number') {
-    res.json({ result: a + b });
+  const { horasAdmin, horasTec } = req.body;
+  if (typeof horasAdmin === 'number' && typeof horasTec === 'number') {
+    res.json({ result: horasAdmin + horasTec });
   } else {
     res.status(400).json({ error: 'Invalid input' });
   }
