@@ -14,39 +14,43 @@ function totalSum(result) {
     return result.reduce((sum, value) => sum + value, 0);
 }
 
-
 // Función para calcular la suma total por proyecto
-function totalSumByProject(items) {
+function totalSumByProject(codes, results) {
     const projectTotals = {};
 
-    items.forEach(item => {
-        const codigoCPP = item.codigoCPP;
-        if (codigoCPP && typeof codigoCPP === 'string') { // Verificar si codigoCPP está definido y es una cadena
-            const projectCode = codigoCPP.substring(0, 4); // Obtener los primeros 4 dígitos
-            if (!projectTotals[projectCode]) {
-                projectTotals[projectCode] = 0;
-            }
-            projectTotals[projectCode] += item.value || 0; // Asegurarse de que item.value es un número
+    codes.forEach(code => {
+        const projectCode = code.substring(0, 4); // Obtener los primeros 4 dígitos
+        if (!projectTotals[projectCode]) {
+            projectTotals[projectCode] = 0;
         }
+        projectTotals[projectCode] += results[code] || 0; // Sumar el valor correspondiente en results
     });
 
     return projectTotals;
 }
-// Función para calcular la suma total por proyecto
-/*function totalSumByProject(items) {
-    const projectTotals = {};
 
-    items.forEach(item => {
-        const projectCode = item.codigoCPP.substring(0, 4); // Obtener los primeros 4 dígitos
-        if (!projectTotals[projectCode]) {
-            projectTotals[projectCode] = 0;
-        }
-        projectTotals[projectCode] += item.value;
-    });
+// Ruta para manejar las solicitudes de cálculo
+app.post('/calculate', (req, res) => {
+    const { horasAdmin,  horasTec, operation, result, codes, results } = req.body;
 
-    return projectTotals;
-}*/
+    if (operation === 'add') {
+        res.json({ result: add(horasAdmin, horasTec) });
+    } else if (operation === 'totalSum' && Array.isArray(result)) {
+        res.json({ result: totalSum(result) });
+    } else if (operation === 'totalSumByProject' && Array.isArray(codes) && typeof results === 'object') {
+        res.json({ result: totalSumByProject(codes, results) });
+    } else {
+        res.status(400).json({ error: 'Invalid input' });
+    }
+});
 
+// Iniciar el servidor
+app.listen(port, () => {
+    console.log(`Server listening at http://localhost:${port}`);
+});
+
+
+/*
 // Ruta para manejar las solicitudes de cálculo
 app.post('/calculate', (req, res) => {
     const { horasAdmin, horasTec, operation, result, items } = req.body;
@@ -65,7 +69,7 @@ app.post('/calculate', (req, res) => {
 // Iniciar el servidor
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
-});
+});*/
 
 /*const express = require('express');
 const app = express();
