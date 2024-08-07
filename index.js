@@ -14,15 +14,24 @@ function totalSum(result) {
     return result.reduce((sum, value) => sum + value, 0);
 }
 
-// Función para calcular la suma total por proyecto
 function totalSumByProject(items, result) {
     let totalSum = 0;
     const projectTotals = {};
+    let currentProjectCode = null; // Variable para almacenar el código del proyecto actual
 
     items.forEach((item, index) => {
         const codigoCPP = item.codigoCPP;
         if (codigoCPP && typeof codigoCPP === 'string') { // Verificar si codigoCPP está definido y es una cadena
             const projectCode = codigoCPP.substring(0, 4); // Obtener los primeros 4 dígitos
+
+            // Verificar si el código del proyecto ha cambiado
+            if (currentProjectCode !== projectCode) {
+                // Reiniciar el objeto projectTotals cuando el código cambie
+                Object.keys(projectTotals).forEach(key => delete projectTotals[key]);
+                currentProjectCode = projectCode; // Actualizar el código del proyecto actual
+            }
+
+            // Inicializar el total para el nuevo código de proyecto si no existe
             if (!projectTotals[projectCode]) {
                 projectTotals[projectCode] = 0;
             }
