@@ -1,4 +1,4 @@
-const express = require('express');
+/*const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -56,9 +56,9 @@ app.post('/calculate', (req, res) => {
 // Iniciar el servidor
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
-});
+});*/
 
-/*const express = require('express');
+const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -111,4 +111,4 @@ app.post('/calculate', (req, res) => {
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
-*/
+
