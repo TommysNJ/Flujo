@@ -93,7 +93,7 @@ function totalSum(result) {
 }*/
 
 // Función para calcular la suma total por proyecto y devolver un array de valores
-function totalSumByProject(items, result) {
+/*function totalSumByProject(items, result) {
     const projectTotals = {};
 
     items.forEach((item, index) => {
@@ -109,6 +109,39 @@ function totalSumByProject(items, result) {
 
     // Extraer los valores de projectTotals y devolverlos como un array
     return Object.values(projectTotals);
+}*/
+
+// Función para calcular la suma total por proyecto y devolver un array de valores
+function totalSumByProject(items, result) {
+    const projectTotals = {};
+    const projectCounts = {};
+
+    items.forEach((item, index) => {
+        const codigoCPP = item.codigoCPP;
+        if (codigoCPP && typeof codigoCPP === 'string') { // Verificar si codigoCPP está definido y es una cadena
+            const projectCode = codigoCPP.substring(0, 4); // Obtener los primeros 4 dígitos
+            if (!projectTotals[projectCode]) {
+                projectTotals[projectCode] = 0;
+                projectCounts[projectCode] = 0;
+            }
+            projectTotals[projectCode] += result[index] || 0; // Sumar el valor correspondiente en result
+            projectCounts[projectCode]++; // Aumentar el contador para este código de proyecto
+        }
+    });
+
+    // Crear un array para almacenar los resultados expandidos
+    const expandedResults = [];
+
+    // Llenar el array con tantas entradas como indique el contador
+    for (const projectCode in projectTotals) {
+        const total = projectTotals[projectCode];
+        const count = projectCounts[projectCode];
+        for (let i = 0; i < count; i++) {
+            expandedResults.push(total);
+        }
+    }
+
+    return expandedResults;
 }
 
 // Ruta para manejar las solicitudes de cálculo
