@@ -103,7 +103,7 @@ function totalSumByProject(items, result) {
     });
 
     // Crear un array para almacenar los resultados expandidos
-    const expandedResults = [];
+    
 
     // Llenar el array con tantas entradas como indique el contador
     for (const projectCode in projectTotals) {
@@ -150,6 +150,16 @@ function totalSumBySubProject(items, result) {
     return expandedResults;
 }
 
+function pesoGlobal(result){
+    let total = totalSum(result);
+    const pesos = [];
+    result.forEach((results) => {
+        let suma = results / total;
+        pesos.push(suma);
+    });
+    return pesos; 
+}
+
 // Ruta para manejar las solicitudes de cálculo
 app.post('/calculate', (req, res) => {
     const { horasAdmin, horasTec, operation, result, items} = req.body;
@@ -162,6 +172,8 @@ app.post('/calculate', (req, res) => {
         res.json({ result: totalSumByProject(items, result) });
     } else if (operation === 'totalSumBySubProject' && Array.isArray(items) && Array.isArray(result)) {
         res.json({ result: totalSumBySubProject(items, result) });
+    } else if (operation === 'pesoGlobal' && Array.isArray(result)) {
+        res.json({ result: pesoGlobal(result) });
     } else {
         res.status(400).json({ error: 'Invalid input' });
     }
