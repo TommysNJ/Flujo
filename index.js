@@ -150,6 +150,7 @@ function totalSumBySubProject(items, result) {
     return expandedResults;
 }
 
+//Función para calcular el peso global 
 function pesoGlobal(result){
     let total = totalSum(result);
     const pesos = [];
