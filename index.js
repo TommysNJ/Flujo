@@ -103,7 +103,7 @@ function totalSumByProject(items, result) {
     });
 
     // Crear un array para almacenar los resultados expandidos
-    
+    const expandedResults = [];
 
     // Llenar el array con tantas entradas como indique el contador
     for (const projectCode in projectTotals) {
