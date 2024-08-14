@@ -199,6 +199,8 @@ app.post('/calculate', (req, res) => {
         res.json({ result: pesoGlobal(result) });
     } else if (operation === 'pesoPorProyecto' && Array.isArray(items) && Array.isArray(result)) {
         res.json({ result: pesoPorProyecto(items, result) });
+    } else if (operation === 'pesoPorSubProyecto' && Array.isArray(items) && Array.isArray(result)) {
+        res.json({ result: pesoPorSubProyecto(items, result) });
     } else {
         res.status(400).json({ error: 'Invalid input' });
     }
