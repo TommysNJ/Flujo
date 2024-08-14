@@ -155,10 +155,21 @@ function pesoGlobal(result){
     let total = totalSum(result);
     const pesos = [];
     result.forEach((results) => {
-        let suma = results / total;
-        pesos.push(suma);
+        let peso = results / total;
+        pesos.push(peso);
     });
     return pesos; 
+}
+
+//Función para calcular el peso por proyecto
+function pesoPorProyecto(items, result){
+    let totalPorProyecto = totalSumByProject(items, result);
+    const pesos = [];
+    for (let i = 0 ; i < totalPorProyecto.length ; i++) {
+        let peso = result[i] / totalPorProyecto[i];
+        pesos.push(peso);
+    }
+    return pesos;
 }
 
 // Ruta para manejar las solicitudes de cálculo
@@ -175,6 +186,8 @@ app.post('/calculate', (req, res) => {
         res.json({ result: totalSumBySubProject(items, result) });
     } else if (operation === 'pesoGlobal' && Array.isArray(result)) {
         res.json({ result: pesoGlobal(result) });
+    } else if (operation === 'pesoPorProyecto' && Array.isArray(items) && Array.isArray(result)) {
+        res.json({ result: pesoPorProyecto(items, result) });
     } else {
         res.status(400).json({ error: 'Invalid input' });
     }
