@@ -172,6 +172,17 @@ function pesoPorProyecto(items, result){
     return pesos;
 }
 
+//Función para calcular el peso por subproyecto
+function pesoPorSubProyecto(items, result){
+    let totalPorSubProyecto = totalSumBySubProject(items, result);
+    const pesos = [];
+    for (let i = 0 ; i < totalPorSubProyecto.length ; i++) {
+        let peso = result[i] / totalPorSubProyecto[i];
+        pesos.push(peso);
+    }
+    return pesos;
+}
+
 // Ruta para manejar las solicitudes de cálculo
 app.post('/calculate', (req, res) => {
     const { horasAdmin, horasTec, operation, result, items} = req.body;
