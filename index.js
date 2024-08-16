@@ -151,7 +151,6 @@ const path = require('path');
 
 app.use(express.json());
 
-
 // Función para sumar dos números
 function add(horasAdmin, horasTec) {
     return horasAdmin + horasTec;
