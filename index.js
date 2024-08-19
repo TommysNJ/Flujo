@@ -274,8 +274,29 @@ function generarFechas(fechaInicio, intervaloDias, numeroFechas) {
     return fechas;
 }
 
-// Función para generar y escribir un archivo CSV con fechas como encabezados
+
+// Función para generar y devolver un archivo CSV como string
 async function generarCSV(fechas) {
+    const csvWriter = createObjectCsvWriter({
+        header: fechas.map((fecha, index) => ({ id: `col${index}`, title: fecha })) // Crear el encabezado usando las fechas
+    });
+
+    const records = [{}];
+    fechas.forEach((fecha, i) => {
+        records[0][`col${i}`] = ''; // Agregar datos específicos si los tienes
+    });
+
+    const tempFilePath = path.join(__dirname, 'output.csv');
+    await csvWriter.writeRecords(records);
+
+    const csvContent = fs.readFileSync(tempFilePath, 'utf-8');
+    fs.unlinkSync(tempFilePath); // Eliminar el archivo temporal después de leerlo
+
+    return csvContent;
+}
+
+// Función para generar y escribir un archivo CSV con fechas como encabezados
+/*async function generarCSV(fechas) {
     const csvWriter = createObjectCsvWriter({
         path: path.join(__dirname, 'output.csv'), // Ruta donde se guardará el archivo CSV
         header: fechas.map((fecha, index) => ({ id: `col${index}`, title: fecha })) // Crear el encabezado usando las fechas
@@ -289,7 +310,7 @@ async function generarCSV(fechas) {
 
     await csvWriter.writeRecords(records);
     return 'output.csv';
-}
+}*/
 
 // Ruta para manejar las solicitudes de cálculo
 app.post('/calculate', async (req, res) => {
@@ -313,6 +334,14 @@ app.post('/calculate', async (req, res) => {
         const fechas = generarFechas(fechaInicio, intervaloDias, numeroFechas);
         res.json({ result: fechas });
     } else if (operation === 'generarCSV' && fechaInicio && intervaloDias && numeroFechas) {
+            try {
+                const fechas = generarFechas(fechaInicio, intervaloDias, numeroFechas); // Generar las fechas
+                const csvContent = await generarCSV(fechas);
+                res.json({ result: csvContent }); // Retornar el contenido del CSV como un string en la respuesta
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to generate CSV' });
+            }
+    /*} else if (operation === 'generarCSV' && fechaInicio && intervaloDias && numeroFechas) {
         try {
             const fechas = generarFechas(fechaInicio, intervaloDias, numeroFechas); // Generar las fechas
             const filePath = await generarCSV(fechas);
@@ -324,7 +353,7 @@ app.post('/calculate', async (req, res) => {
             });
         } catch (error) {
             res.status(500).json({ error: 'Failed to generate CSV' });
-        }
+        }*/
     } else {
         res.status(400).json({ error: 'Invalid input' });
     }
