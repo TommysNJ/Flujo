@@ -1,4 +1,4 @@
-/*const express = require('express');
+const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -140,9 +140,9 @@ app.post('/calculate', (req, res) => {
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
-*/
 
-const express = require('express');
+
+/*const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const fs = require('fs');
@@ -313,7 +313,7 @@ async function generarCSV(fechas) {
 }*/
 
 // Ruta para manejar las solicitudes de cálculo
-app.post('/calculate', async (req, res) => {
+/*app.post('/calculate', async (req, res) => {
     const { horasAdmin, horasTec, operation, result, fechaInicio, intervaloDias, numeroFechas } = req.body;
 
     if (operation === 'add') {
@@ -341,7 +341,7 @@ app.post('/calculate', async (req, res) => {
             } catch (error) {
                 res.status(500).json({ error: 'Failed to generate CSV' });
             }
-    /*} else if (operation === 'generarCSV' && fechaInicio && intervaloDias && numeroFechas) {
+    } else if (operation === 'generarCSV' && fechaInicio && intervaloDias && numeroFechas) {
         try {
             const fechas = generarFechas(fechaInicio, intervaloDias, numeroFechas); // Generar las fechas
             const filePath = await generarCSV(fechas);
@@ -353,7 +353,7 @@ app.post('/calculate', async (req, res) => {
             });
         } catch (error) {
             res.status(500).json({ error: 'Failed to generate CSV' });
-        }*/
+        }
     } else {
         res.status(400).json({ error: 'Invalid input' });
     }
@@ -363,4 +363,4 @@ app.post('/calculate', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
-
+*/
